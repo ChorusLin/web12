@@ -8,6 +8,34 @@ Version:        0.1.0
 
 @import url("../twentyeleven/style.css");
 
+/* Import fonts from Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
 #site-title a {
     color: #009900;
+}
+
+/**
+ * Inställningar för typsnitt
+ */
+body {
+	font-family: "Open Sans", serif;
+}
+
+/**
+ * Huvud-menyn
+ */
+#access {
+	background: #1daeea;
+}
+#access ul {
+	font-size: 18px;
+	text-transform: uppercase;
+}
+
+#access li:hover > a,
+#access ul ul :hover > a,
+#access a:focus {
+	background: #25428c;
+	color: #f6f5f2;
 }
