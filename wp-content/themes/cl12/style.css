@@ -11,31 +11,115 @@ Version:        0.1.0
 /* Import fonts from Google Fonts */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
-#site-title a {
-    color: #009900;
+
+/* =Structure
+----------------------------------------------- */
+
+.entry-title {
+	display: none;
 }
 
-/**
- * Inställningar för typsnitt
- */
+/* =Global
+----------------------------------------------- */
 body {
 	font-family: "Open Sans", serif;
 }
+#page {
+	background: #f6f5f2;
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+}
+hr {
+	background-color: white;
+	height: 3px;
+}
 
-/**
- * Huvud-menyn
- */
+/* =Header
+----------------------------------------------- */
+
+#branding {
+	background: #ffffff;
+	border: none;
+}
+#site-title a {
+    color: #25428c;
+	font-size: 36pt;
+	font-weight: bold;
+	text-transform: uppercase;
+	align: center;
+}
+#site-description {
+	color: #25428c;
+	font-size: 14pt;
+	margin-bottom: 1.5em;
+}
+
+/* =Menu
+-------------------------------------------------------------- */
 #access {
 	background: #1daeea;
 }
 #access ul {
-	font-size: 18px;
+	font-size: 14px;
 	text-transform: uppercase;
 }
-
+#access li {
+	border-right: 1px solid white;
+	/* width: 14%; */
+	text-align: center;
+}
+#access a {
+	color: white;
+}
 #access li:hover > a,
 #access ul ul :hover > a,
 #access a:focus {
 	background: #25428c;
-	color: #f6f5f2;
+	color: white;
+}
+#access .page-item-25 {
+	border-right: none;
+}
+
+/* =Content
+----------------------------------------------- */
+.entry-title {
+	color: #1daeea;
+}
+.entry-title a {
+	color: #1daeea;
+}
+.entry-title a:hover,
+.entry-title a:focus,
+.entry-title a:active {
+	color: #25428c;
+}
+.hentry,
+.no-resultst {
+	border-bottom: 3px solid white;
+}
+.entry-content h1,
+.entry-content h2 {
+	color: #1daeea;
+}
+
+/* =Footer
+----------------------------------------------- */
+
+#site-generator {
+	background: #1daeea;
+	border-top: none;
+	padding: 0.5em 0.5em;
+}
+
+
+/* =Responsive Structure
+----------------------------------------------- */
+
+@media (max-width: 650px) {
+	#site-title a {
+		font-size: 28pt;
+	}
+	#site-description {
+		font-size: 12pt;
+	}
 }
