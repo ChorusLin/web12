@@ -25,7 +25,6 @@ body {
 	font-family: "Open Sans", serif;
 }
 #page {
-	background: #f6f5f2;
 	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
 }
 hr {
@@ -37,11 +36,9 @@ hr {
 ----------------------------------------------- */
 
 #branding {
-	background: #ffffff;
 	border: none;
 }
 #site-title a {
-    color: #25428c;
 	font-size: 36pt;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -53,11 +50,10 @@ hr {
 	margin-bottom: 1.5em;
 }
 
+
 /* =Menu
 -------------------------------------------------------------- */
-#access {
-	background: #1daeea;
-}
+
 #access ul {
 	font-size: 14px;
 	text-transform: uppercase;
@@ -70,29 +66,12 @@ hr {
 #access a {
 	color: white;
 }
-#access li:hover > a,
-#access ul ul :hover > a,
-#access a:focus {
-	background: #25428c;
-	color: white;
-}
 #access .page-item-25 {
 	border-right: none;
 }
 
 /* =Content
 ----------------------------------------------- */
-.entry-title {
-	color: #1daeea;
-}
-.entry-title a {
-	color: #1daeea;
-}
-.entry-title a:hover,
-.entry-title a:focus,
-.entry-title a:active {
-	color: #25428c;
-}
 .hentry,
 .no-resultst {
 	border-bottom: 3px solid white;
