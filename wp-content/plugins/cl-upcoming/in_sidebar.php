@@ -1,4 +1,4 @@
-<aside id="clup" class="widget">
+<aside class="widget_clup widget">
 	<h1 class="cluptitle">På gång</h1>
 	<p class="clupinfo">
 		Petite Messe Solennelle<br />

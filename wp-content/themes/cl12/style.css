@@ -59,15 +59,11 @@ hr {
 	text-transform: uppercase;
 }
 #access li {
-	border-right: 1px solid white;
 	/* width: 14%; */
 	text-align: center;
 }
 #access a {
 	color: white;
-}
-#access .page-item-25 {
-	border-right: none;
 }
 
 /* =Content
@@ -79,6 +75,11 @@ hr {
 .entry-content h1,
 .entry-content h2 {
 	color: #1daeea;
+}
+.right-sidebar #content {
+	padding-right: 4%;
+	margin-right: 30%;
+	border-right: 3px solid white;
 }
 
 /* =Footer
@@ -100,5 +101,8 @@ hr {
 	}
 	#site-description {
 		font-size: 12pt;
+	}
+	.right-sidebar #content {
+		border-right: none;
 	}
 }

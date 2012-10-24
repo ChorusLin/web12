@@ -1,18 +1,20 @@
-/*#clup {
-	display: block;
-	text-align: center;
-	width: 100%;
-}*/
-
-#clup {
+.widget_clup {
 	display: block;
 	width: 188px;
 	height: 188px;
 	margin: 0 auto 1.625em auto;
 	
-	background: url('circle.svg') center no-repeat;
-	background-size: 100%;
-	z-index: 1;
+	/* Make the background a circle */
+	/* Override color and background-color in a template color scheme css */
+	background-color: black;
+	-moz-border-radius: 94px;
+	-webkit-border-radius: 94px;
+	border-radius: 94px;
+	
+	/* Add a drop shadow */
+	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 	
 	text-align: center;
 	color: white;;
@@ -22,7 +24,6 @@ h1.cluptitle {
 	font-size: 16px;
 	padding-top: 2em;
 	margin-bottom: 0.6em;
-/*	padding-top: 0.8em;*/
 	text-transform: uppercase;
 }
 
