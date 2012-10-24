@@ -1,4 +1,4 @@
-<div id="clupcircle">
+<aside id="clup" class="widget">
 	<h1 class="cluptitle">På gång</h1>
 	<p class="clupinfo">
 		Petite Messe Solennelle<br />
@@ -6,4 +6,4 @@
 		...och en massa annat skrot som inte får plats
 	</p>
 	<p class="clupreadmore">Läs mer...</p>
-</div
+</aside>

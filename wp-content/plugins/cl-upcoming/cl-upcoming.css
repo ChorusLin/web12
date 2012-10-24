@@ -1,16 +1,15 @@
-#cluplogo {
-/*	background-color: blue;*/
+/*#clup {
+	display: block;
 	text-align: center;
-	background: url('circle.svg') top no-repeat;
-	background-size: 40%;
 	width: 100%;
-	z-index: 5;
-}
+}*/
 
-#clupcircle {
-/*	display: block;*/
-	width: 100%;
-	height: 200px;
+#clup {
+	display: block;
+	width: 188px;
+	height: 188px;
+	margin: 0 auto 1.625em auto;
+	
 	background: url('circle.svg') center no-repeat;
 	background-size: 100%;
 	z-index: 1;
@@ -20,7 +19,7 @@
 }
 
 h1.cluptitle {
-	font-size: 14pt;
+	font-size: 16px;
 	padding-top: 2em;
 	margin-bottom: 0.6em;
 /*	padding-top: 0.8em;*/
@@ -30,11 +29,11 @@ h1.cluptitle {
 p.clupinfo {
 	margin-left: 10px;
 	margin-right: 10px;
-	font-size: 10pt;
+	font-size: 12px;
 	height: 3em;
 	overflow: hidden;
 }
 
 p.clupreadmore {
-	font-size: 11pt;
+	font-size: 14px;
 }
