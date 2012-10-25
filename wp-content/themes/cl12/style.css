@@ -76,7 +76,7 @@ hr {
 .entry-content h2 {
 	color: #1daeea;
 }
-.right-sidebar #content {
+.page-template-sidebar-page-php #content {
 	padding-right: 4%;
 	margin-right: 30%;
 	border-right: 3px solid white;
@@ -95,14 +95,17 @@ hr {
 /* =Responsive Structure
 ----------------------------------------------- */
 
+@media (max-width: 800px) {
+	.page-template-sidebar-page-php #content {
+		border-right: none;
+	}
+}
+
 @media (max-width: 650px) {
 	#site-title a {
 		font-size: 28pt;
 	}
 	#site-description {
 		font-size: 12pt;
-	}
-	.right-sidebar #content {
-		border-right: none;
 	}
 }
