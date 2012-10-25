@@ -16,6 +16,11 @@ Version:        0.1.0
 ----------------------------------------------- */
 
 .entry-title {
+/*	display: none;*/
+}
+
+/* Singular */
+footer.entry-meta {
 	display: none;
 }
 
@@ -66,6 +71,7 @@ hr {
 	color: white;
 }
 
+
 /* =Content
 ----------------------------------------------- */
 .hentry,
@@ -81,6 +87,11 @@ hr {
 	margin-right: 30%;
 	border-right: 3px solid white;
 }
+
+
+/* =Comments
+----------------------------------------------- */
+
 
 /* =Footer
 ----------------------------------------------- */

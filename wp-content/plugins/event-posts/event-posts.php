@@ -44,12 +44,13 @@ function ep_eventposts() {
 	$args = array(
     	'labels' => $labels,
     	'public' => true,
-		'supports' => array( 'title', 'editor', 'thumbnail', 'comments' ),
+		'supports' => array( 'title', 'editor', 'thumbnail' ),
 		'capability_type' => 'post',
 		'rewrite' => array("slug" => "event"), // Permalinks format
 		'menu_position' => 5,
 		'menu_icon' => plugin_dir_url( __FILE__ ) . '/images/calendar-icon.gif',  // Icon Path
 		'has_archive' => true,
+		'taxonomies' => array( 'category' )
 	); 
 
 	register_post_type( 'event', $args );
