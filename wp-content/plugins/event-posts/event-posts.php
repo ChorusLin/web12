@@ -21,6 +21,8 @@ function ep_eventposts_activation() {
 
 register_activation_hook( __FILE__, 'ep_eventposts_activation' );
 
+include( 'events-in-page.php' );
+
 function ep_eventposts() {
 
 	/**
