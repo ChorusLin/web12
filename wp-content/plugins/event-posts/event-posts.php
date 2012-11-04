@@ -10,22 +10,25 @@ License: GPLv2 or later
 */
 
 
-if ( !function_exists( 'add_action' ) )
+if ( ! function_exists( 'add_action' ) ) {
 	wp_die( 'You are trying to access this file in a manner not allowed.', 'Direct Access Forbidden', array( 'response' => '403' ) );
-
-function ep_eventposts_activation() {
-	ep_eventposts();
-
-	/**
-	 * Flushes rewrite rules on plugin activation to ensure event posts don't 404
-	 * http://codex.wordpress.org/Function_Reference/flush_rewrite_rules
-	 */
-	flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'ep_eventposts_activation' );
 
 require_once ( 'events-in-page.php' );
 require_once ( 'event-posts-admin.php' );
+
+function init_event_posts( ) {
+	new EventPosts( );
+}
+add_action( 'plugins_loaded', 'init_event_posts' );
+
+
+function ep_eventposts_activation( ) {
+	$plugin = new EventPosts();
+	$plugin->activate();
+
+}
+register_activation_hook( __FILE__, 'ep_eventposts_activation' );
 
 class EventPosts {
 	function __construct() {
@@ -34,7 +37,15 @@ class EventPosts {
 		new EventPostsAdmin();
 	}
 
-	function register() {
+	function activate( ) {
+		/**
+		 * Flushes rewrite rules on plugin activation to ensure event posts don't 404
+		 * http://codex.wordpress.org/Function_Reference/flush_rewrite_rules
+		 */
+		flush_rewrite_rules();
+	}
+
+	function register( ) {
 		/**
 		 * Enable the event custom post type
 		 * http://codex.wordpress.org/Function_Reference/register_post_type
@@ -111,34 +122,11 @@ function ep_event_query( $query ) {
 		$query->set( 'orderby', 'meta_value_num' );
 		$query->set( 'meta_key', '_start_timestamp' );
 		$query->set( 'order', 'ASC' );
-		$query->set( 'posts_per_page', '2' );
+		$query->set( 'posts_per_page', '-1' );
 	}
-
 }
 
 add_action( 'pre_get_posts', 'ep_event_query' );
 
-function ept_admin_footer_datepicker() {
-	?>
-	<script type="text/javascript">
-	jQuery(document).ready(function(){
-		jQuery('.datepicker').datepicker({
-			dateFormat : 'yy-mm-dd',
-			firstDay: 1,
-			showWeek: true,
-			showOn: "button",
-			buttonImage: "<?php echo plugin_dir_url( __FILE__ ) . 'jquery-ui-theme-flick/images/calendar.gif'; ?>",
-			buttonImageOnly: false
-		});
-	});
-	</script>
-	<?php
-}
-add_action( 'admin_footer', 'ept_admin_footer_datepicker' );
 
-
-function init_event_posts( ) {
-	new EventPosts( );
-}
-add_action( 'plugins_loaded', 'init_event_posts' );
 ?>

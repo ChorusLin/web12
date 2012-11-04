@@ -12,6 +12,9 @@ class EventPostsAdmin {
 		// Add custom CSS to style the metaboxes
 		add_action('admin_print_styles-post.php', array( $this, 'metabox_css' ) );
 		add_action('admin_print_styles-post-new.php', array( $this, 'metabox_css') );
+
+		// Add jQuery scripts for the admin page
+		add_action( 'admin_footer', array( $this, 'admin_footer_datepicker' ) );
 	}
 
 	function metabox_css() {
@@ -139,6 +142,22 @@ class EventPostsAdmin {
 	}
 
 
+	function admin_footer_datepicker() {
+		?>
+		<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('.datepicker').datepicker({
+				dateFormat : 'yy-mm-dd',
+				firstDay: 1,
+				showWeek: true,
+				showOn: "button",
+				buttonImage: "<?php echo plugin_dir_url( __FILE__ ) . 'jquery-ui-theme-flick/images/calendar.gif'; ?>",
+				buttonImageOnly: false
+			});
+		});
+		</script>
+		<?php
+	}
 }
 
 ?>
