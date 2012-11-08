@@ -6,6 +6,7 @@ if ( !function_exists( 'add_action' ) )
 class EventPostsAdmin {
 
 	function __construct( ) {
+		add_action( 'admin_init', array( $this, 'metabox_css' ) );
 		add_action( 'admin_init', array( $this, 'create_metaboxes' ) );
 		add_action( 'save_post', array( $this, 'save_meta' ), $priority = 1, $accepted_args = 2 );
 
@@ -18,7 +19,7 @@ class EventPostsAdmin {
 	}
 
 	function metabox_css() {
-		wp_enqueue_style('your-meta-box', plugin_dir_url( __FILE__ ) . '/event-post-metabox.css');
+		wp_enqueue_style('your-meta-box', plugins_url( 'admin.css', __FILE__ ) );
 	}
 
 	/**
@@ -28,42 +29,56 @@ class EventPostsAdmin {
 	function create_metaboxes() {
 		// Enqueue jQuery datepicker files used for the event dates
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_style( 'jquery.ui.theme', plugins_url( '/jquery-ui-theme-flick/jquery-ui-1.9.1.custom.css', __FILE__ ) );
+		wp_enqueue_style( 'jquery.ui.theme', plugins_url( 'jquery-ui-theme-flick/jquery-ui-1.9.1.custom.css', __FILE__ ) );
 
-		add_meta_box( 'ept_metabox_event_date_start', 'Start Date and Time', 
-			array( $this, 'metabox_event_date' ), 'event', 'side', 'default', array( 'id' => '_start') );
-		add_meta_box( 'ept_metabox_event_date_end', 'End Date and Time',
-		   	array( $this, 'metabox_event_date' ), 'event', 'side', 'default', array('id'=>'_end') );
-		add_meta_box( 'event_location', 'Event Location',
-			array( $this, 'event_location' ), 'event', 'normal', 'default', array('id'=>'_end') );
+		//wp_enqueue_script( 'jquery-validate' plugins_url( 'jquery/jquery-validate-blabla.js' ) ); // TODO: Hämta hem jQuery-validate
+
+		wp_enqueue_style('your-meta-box', plugins_url( 'admin.css', __FILE__ ) );
+
+		add_meta_box( 'ept_event_occasion', __('Date, Time and Location'),
+			array( $this, 'metabox_event_occasion' ), 'event', 'normal' );
 	}
 
-	// Metabox HTML
-	function metabox_event_date( $post, $args ) {
-		$metabox_id = $args['args']['id'];
-		global $post, $wp_locale;
+	private function metabox_date_time_controls( $label, $id, $datetime ) {
+		echo '<tr>';
+		// Date
+		echo '<td><label for="' . $id . '_date">' . $label . ':</label></td>';
+		echo '<td><input type="text" class="datepicker date" name="' . $id . '_date" value="' . date('Y-m-d', $datetime ) . '" size="10" maxlength="10" /></td>';
+		// Time
+		echo '<td><input type="text" name="' . $id . '_hour" value="' . date('H', $datetime ) . '" size="2" maxlength="2" />:';
+		echo '<input type="text" name="' . $id . '_minute" value="' . date('i', $datetime ) . '" size="2" maxlength="2" /></td>';
+		echo '</tr>';
+	}
+
+	private function metabox_location_controls( $label, $location ) {
+		echo '<tr>';
+		echo '<td><label for="location">' . $label . ':</label></td>';
+		echo '<td colspan="3"><input type="text" name="event_location" value=' . $location . ' /></td>';
+		echo '</tr>';
+	}
+
+	// Occasion metabox
+	function metabox_event_occasion( $post, $args ) {
+		global $post;
 
 		// Use nonce for verification
 		wp_nonce_field( plugin_basename( __FILE__ ), 'ep_eventposts_nonce' );
-
-		// $time_adj = current_time( 'timestamp' );
-		$timestamp = get_post_meta( $post->ID, $metabox_id . '_timestamp', true );
-		if ( $timestamp == '' ) {
-			$timestamp = time();
-		}
 		
-		$year = date( 'Y', $timestamp );
-		$month = date( 'n', $timestamp );
-		$day = date( 'd', $timestamp );
-		$hour = date( 'H', $timestamp );
-		$min = date( 'i', $timestamp );
+		$timestamps = array();
+		foreach ( array('_start', '_end') as $key ) {
+			$timestamps[ $key ] = get_post_meta( $post->ID, $key . '_timestamp', true );
+			if ( $timestamps[ $key ] == '' ) {
+				$timestamps[ $key ] = time();
+			}
+		}
 
-		$date = $year . '-' . $month . '-' . $day;
+		$location = get_post_meta( $post->ID, '_location', true );
 
-		// Metabox HTML
-		echo '<input type="text" class="datepicker" name="' . $metabox_id . '_date" value="' . $date . '" size="10" maxlength="10" />';
-		echo '<input type="text" name="' . $metabox_id . '_hour" value="' . $hour . '" size="2" maxlength="2"/>:';
-		echo '<input type="text" name="' . $metabox_id . '_minute" value="' . $min . '" size="2" maxlength="2" />';
+		echo '<table>';
+		$this->metabox_date_time_controls( __('Start'), '_start', $timestamps['_start'] );
+		$this->metabox_date_time_controls( __('End'), '_end', $timestamps['_end'] );
+		$this->metabox_location_controls( __('Location'), $location );
+		echo '</table>';
 	}
 
 	// Save data from all metaboxes as post metadata
@@ -82,13 +97,12 @@ class EventPostsAdmin {
 			return;
 
 		// OK, we're authenticated: we need to find and save the data
-		// We'll put it into an array to make it easier to loop though
 		$metabox_ids = array( '_start', '_end' );
 
 		foreach ( $metabox_ids as $key ) {
-			$date = $_POST[$key . '_date'];
-			$hour   = $_POST[$key . '_hour'];
-			$min    = $_POST[$key . '_minute'];
+			$date = $_POST[ $key . '_date' ];
+			$hour = $_POST[ $key . '_hour' ];
+			$min  = $_POST[ $key . '_minute' ];
 
 			try {
 				$date = new DateTime( $date );
@@ -106,6 +120,9 @@ class EventPostsAdmin {
 		if ( $events_meta[ '_end_timestamp' ] < $events_meta[ '_start_timestamp' ] ) {
 			return;
 		}
+
+		// Get the event location
+		$events_meta['_location'] = $_POST['event_location'];
 	 
 		// Add values of $events_meta as custom fields
 		foreach ( $events_meta as $key => $value ) { // Cycle through the $events_meta array!
@@ -125,36 +142,35 @@ class EventPostsAdmin {
 				add_post_meta( $post->ID, $key, $value );
 			}
 			// Delete if blank
-			if ( !$value )
+			if ( ! $value )
 				delete_post_meta( $post->ID, $key );
 		}
 	}
 
-	function event_location( ) {
-		global $post;
-		// Use nonce for verification
-		wp_nonce_field( plugin_basename( __FILE__ ), 'ep_eventposts_nonce' );
-
-		// The metabox HTML
-		$event_location = get_post_meta( $post->ID, '_event_location', true );
-		echo '<label for="_event_location">Location:</label>';
-		echo '<input type="text" name="_event_location" value="' . $event_location  . '" />';
-	}
-
-
 	function admin_footer_datepicker() {
 		?>
 		<script type="text/javascript">
-		jQuery(document).ready(function(){
-			jQuery('.datepicker').datepicker({
-				dateFormat : 'yy-mm-dd',
-				firstDay: 1,
-				showWeek: true,
-				showOn: "button",
-				buttonImage: "<?php echo plugin_dir_url( __FILE__ ) . 'jquery-ui-theme-flick/images/calendar.gif'; ?>",
-				buttonImageOnly: false
+		( function( $ ) {
+			$(document).ready(function() {
+				$('.datepicker').datepicker({
+					dateFormat : 'yy-mm-dd',
+					firstDay: 1,
+					showWeek: true,
+					showOn: "button",
+					buttonImage: "<?php echo plugin_dir_url( __FILE__ ) . 'jquery-ui-theme-flick/images/calendar.gif'; ?>",
+					buttonImageOnly: false
+				});
+				$('.event-date').keyup( function() {
+					$(this).validate({
+						rules: {
+							field: {
+								date: true
+							}
+						}
+					})
+				});
 			});
-		});
+		})( jQuery );
 		</script>
 		<?php
 	}
