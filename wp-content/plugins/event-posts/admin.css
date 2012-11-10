@@ -10,3 +10,7 @@
 input[type=text].error {
 	background-color: red;
 }
+
+#ept_event_occasion input[type=checkbox] {
+	margin-right: 5px;
+}
