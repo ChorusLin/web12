@@ -3,6 +3,8 @@
 if ( ! function_exists( 'add_action' ) )
 	wp_die( 'You are trying to access this file in a manner not allowed.', 'Direct Access Forbidden', array( 'response' => '403' ) );
 
+require_once( 'scripts/admin.js.php' );
+
 class EventPostsAdmin {
 
 	function __construct( ) {
@@ -14,8 +16,8 @@ class EventPostsAdmin {
 		add_action('admin_print_styles-post.php', array( $this, 'metabox_css' ) );
 		add_action('admin_print_styles-post-new.php', array( $this, 'metabox_css') );
 
-		// Add jQuery scripts for the admin page
-		add_action( 'admin_footer', array( $this, 'admin_footer_datepicker' ) );
+		// Add scripts for the admin page
+		add_action( 'admin_footer', 'ept_admin_footer_javascript' );
 	}
 
 	function metabox_css() {
@@ -29,9 +31,8 @@ class EventPostsAdmin {
 	function create_metaboxes() {
 		// Enqueue jQuery datepicker files used for the event dates
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_style( 'jquery.ui.theme', plugins_url( 'jquery-ui-theme-flick/jquery-ui-1.9.1.custom.css', __FILE__ ) );
-
-		//wp_enqueue_script( 'jquery-validate' plugins_url( 'jquery/jquery-validate-blabla.js' ) ); // TODO: Hämta hem jQuery-validate
+		wp_enqueue_style( 'jquery.ui.theme', plugins_url( 'scripts/jquery-ui-theme-flick/jquery-ui-1.9.1.custom.css', __FILE__ ) );
+		wp_enqueue_script( 'date', plugins_url( 'scripts/date-se-SE.js', __FILE__ ) );
 
 		wp_enqueue_style('your-meta-box', plugins_url( 'admin.css', __FILE__ ) );
 
@@ -39,22 +40,30 @@ class EventPostsAdmin {
 			array( $this, 'metabox_event_occasion' ), 'event', 'normal' );
 	}
 
-	private function metabox_all_day_event_controls( $label, $enabled ) {
-		$enabled_attr = $enabled ? ' checked="checked"' : '';
+	private function metabox_controls_all_day_event( $label, $activated ) {
+		$checked_attr = $activated ? ' checked="checked"' : '';
 		echo '<tr>';
 		echo '<td colspan="*">';
-		echo '<input type="checkbox" class="all-day-checkbox" name="all_day_event" value="whole_day" ' . $enabled_attr . '/>';
+		echo '<input type="checkbox" class="all-day-checkbox" name="all_day_event" ' . $checked_attr . '/>';
 		echo $label . '</td>';
-		echo '<tr>';
+		echo '</tr>';
 	}
 
-	private function metabox_date_time_controls( $label, $id, $datetime, $show_time ) {
-		// All day event?
+	private function metabox_controls_show_end_time( $label, $activated ) {
+		$checked_attr = $activated ? ' checked="checked"' : '';
 		echo '<tr>';
+		echo '<td colspan="*">';
+		echo '<input type="checkbox" class="show-end-time-checkbox" name="show_end_time" ' . $checked_attr . '/>';
+		echo $label . '</td>';
+		echo '</tr>';
+	}
+
+	private function metabox_controls_date_time( $label, $id, $datetime, $show_time ) {
+		echo '<tr class="' . $id . '_time_row">';
 
 		// Date
 		echo '<td><label for="' . $id . '_date">' . $label . ':</label></td>';
-		echo '<td><input type="text" class="datepicker date" ';
+		echo '<td><input type="text" class="date" ';
 		echo	'name="' . $id . '_date" ';
 		echo	'value="' . date('Y-m-d', $datetime ) . '" ';
 		echo	'size="10" maxlength="10" /></td>';
@@ -64,13 +73,20 @@ class EventPostsAdmin {
 		echo '<td class="ept_time"' . $visibility . '>';
 		echo '<input type="text" ';
 		echo 	'name="' . $id . '_hour" ';
+		echo	'class="hour" ';
 		echo	'value="' . date('H', $datetime ) . '" ';
 		echo	'size="2" maxlength="2" />:';
-		echo '<input type="text" name="' . $id . '_minute" value="' . date('i', $datetime ) . '" size="2" maxlength="2" /></td>';
+
+		echo '<input type="text" ';
+		echo	'name="' . $id . '_minute" ';
+		echo	'class="minute" ';
+		echo	'value="' . date('i', $datetime ) . '" ';
+		echo	'size="2" maxlength="2" /></td>';
+
 		echo '</tr>';
 	}
 
-	private function metabox_location_controls( $label, $location ) {
+	private function metabox_controls_location( $label, $location ) {
 		echo '<tr>';
 		echo '<td><label for="location">' . $label . ':</label></td>';
 		echo '<td colspan="3"><input type="text" name="event_location" value=' . $location . ' /></td>';
@@ -94,12 +110,17 @@ class EventPostsAdmin {
 
 		$location = get_post_meta( $post->ID, '_location', $single = true );
 		$all_day_event = get_post_meta( $post->ID, '_all_day', $single = true );
+		$show_end_time = get_post_meta( $post->ID, '_show_end_time', $single = true );
+		if ( $show_end_time == '' ) {
+			$show_end_time = true;
+		}
 
 		echo '<table>';
-		$this->metabox_all_day_event_controls( __('All Day Event'), $all_day_event );
-		$this->metabox_date_time_controls( __('Start'), '_start', $timestamps['_start'], $show_time = ! $all_day_event );
-		$this->metabox_date_time_controls( __('End'), '_end', $timestamps['_end'], $show_time = ! $all_day_event );
-		$this->metabox_location_controls( __('Location'), $location );
+		$this->metabox_controls_all_day_event( __('All Day Event'), $all_day_event );
+		$this->metabox_controls_date_time( __('Start'), '_start', $timestamps['_start'], $show_time = ! $all_day_event );
+		$this->metabox_controls_show_end_time( __('Specify End Time'), $activated = $show_end_time );
+		$this->metabox_controls_date_time( __('End'), '_end', $timestamps['_end'], $show_time = ! $all_day_event );
+		$this->metabox_controls_location( __('Location'), $location );
 		echo '</table>';
 	}
 
@@ -173,51 +194,6 @@ class EventPostsAdmin {
 			if ( ! $value )
 				delete_post_meta( $post->ID, $key );
 		}
-	}
-
-	function admin_footer_datepicker() {
-		?>
-		<script type="text/javascript">
-		( function( $ ) {
-			$(document).ready(function() {
-				$('.datepicker').datepicker({
-					dateFormat : 'yy-mm-dd',
-					firstDay: 1,
-					showWeek: true,
-					showOn: "button",
-					buttonImage: "<?php echo plugin_dir_url( __FILE__ ) . 'jquery-ui-theme-flick/images/calendar.gif'; ?>",
-					buttonImageOnly: false
-				});
-				$('.event-date').keyup( function() {
-					$(this).validate({
-						rules: {
-							field: {
-								date: true
-							}
-						}
-					})
-				});
-
-				// Hide/show the time input boxes depending on whether the event is marked as All day
-				function update_checkbox_visibility( checkbox ) {
-					if ( checkbox.is(':checked') ) {
-						$('.ept_time').hide();
-					}
-					else {
-						$('.ept_time').show();
-					}
-				}
-
-				// Start with time inputs shown or hidden
-				update_checkbox_visibility( $('.all-day-checkbox') );
-				// Update when the checkbox status changes
-				$('.all-day-checkbox').click( function() {
-					update_checkbox_visibility( $(this) );
-				});
-			});
-		})( jQuery );
-		</script>
-		<?php
 	}
 }
 
