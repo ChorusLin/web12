@@ -80,20 +80,6 @@ class EventPosts {
 }
 
 
-// Display the date
-function eventposttype_get_the_event_date() {
-    global $post;
-    $eventdate = '';
-    $month = get_post_meta( $post->ID, '_month', true );
-    $eventdate = eventposttype_get_the_month_abbr($month);
-    $eventdate .= ' ' . get_post_meta( $post->ID, '_day', true ) . ',';
-    $eventdate .= ' ' . get_post_meta( $post->ID, '_year', true );
-    $eventdate .= ' at ' . get_post_meta( $post->ID, '_hour', true );
-    $eventdate .= ':' . get_post_meta( $post->ID, '_minute', true );
-    echo $eventdate;
-}
-
-
 /**
  * Customize Event Query using Post Meta
  * 
@@ -104,9 +90,7 @@ function eventposttype_get_the_event_date() {
 function ep_event_query( $query ) {
 
 	// http://codex.wordpress.org/Function_Reference/current_time
-	$current_time = current_time('mysql'); 
-	list( $today_year, $today_month, $today_day, $hour, $minute, $second ) = split( '([^0-9])', $current_time );
-	$current_timestamp = $today_year . $today_month . $today_day . $hour . $minute;
+	$current_time = time();
 
 	global $wp_the_query;
 	
@@ -127,6 +111,5 @@ function ep_event_query( $query ) {
 }
 
 add_action( 'pre_get_posts', 'ep_event_query' );
-
 
 ?>

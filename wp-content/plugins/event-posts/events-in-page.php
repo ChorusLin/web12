@@ -28,9 +28,9 @@ function event_posts_in_page( $atts ) {
 	}
 	$args['meta_query'] = array(
 		array(
-			'key' => '_start_eventtimestamp',
+			'key' => '_start_timestamp',
 			'compare' => $compare_type,
-			'value' => date( 'Ymd' . '0000' )
+			'value' => time()
 		)
 	);
 	$args['orderby'] = 'meta_value_num';

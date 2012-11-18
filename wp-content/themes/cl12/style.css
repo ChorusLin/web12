@@ -20,6 +20,7 @@ Version:        0.1.0
 }
 
 /* Singular */
+.entry-utility,
 footer.entry-meta {
 	display: none;
 }
@@ -74,9 +75,13 @@ hr {
 
 /* =Content
 ----------------------------------------------- */
-.hentry,
-.no-resultst {
+
+/*.entry-content p, 
+.entry-summary {
 	border-bottom: 3px solid white;
+}*/
+.hentry {
+	border: none;
 }
 .entry-content h1,
 .entry-content h2 {

@@ -104,14 +104,14 @@ class EventPostsAdmin {
 		foreach ( array('_start', '_end') as $key ) {
 			$timestamps[ $key ] = get_post_meta( $post->ID, $key . '_timestamp', true );
 			if ( $timestamps[ $key ] == '' ) {
-				$timestamps[ $key ] = time();
+				$timestamps[ $key ] = mktime( $hour = 18, $minute = 0, $second = 0 );
 			}
 		}
 
 		$location = get_post_meta( $post->ID, '_location', $single = true );
 		$all_day_event = get_post_meta( $post->ID, '_all_day', $single = true );
 		$show_end_time = get_post_meta( $post->ID, '_show_end_time', $single = true );
-		$show_end_time == 'FALSE' ? $show_end_time = false : true;
+		$show_end_time == 'TRUE' ? $show_end_time = true : false;
 
 		echo '<table>';
 		$this->metabox_controls_all_day_event( __('All Day Event'), $all_day_event );
