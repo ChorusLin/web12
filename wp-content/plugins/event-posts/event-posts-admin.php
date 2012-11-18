@@ -89,7 +89,7 @@ class EventPostsAdmin {
 	private function metabox_controls_location( $label, $location ) {
 		echo '<tr>';
 		echo '<td><label for="location">' . $label . ':</label></td>';
-		echo '<td colspan="3"><input type="text" name="event_location" value=' . $location . ' /></td>';
+		echo '<td colspan="3"><input type="text" name="event_location" value="' . $location . '" /></td>';
 		echo '</tr>';
 	}
 
@@ -111,9 +111,7 @@ class EventPostsAdmin {
 		$location = get_post_meta( $post->ID, '_location', $single = true );
 		$all_day_event = get_post_meta( $post->ID, '_all_day', $single = true );
 		$show_end_time = get_post_meta( $post->ID, '_show_end_time', $single = true );
-		if ( $show_end_time == '' ) {
-			$show_end_time = true;
-		}
+		$show_end_time == 'FALSE' ? $show_end_time = false : true;
 
 		echo '<table>';
 		$this->metabox_controls_all_day_event( __('All Day Event'), $all_day_event );
@@ -165,13 +163,22 @@ class EventPostsAdmin {
 			$events_meta[ $key . '_timestamp' ] = $date->getTimestamp();
 		}
 
-		// Verify that the end date/time is after the start date/time
-		if ( $events_meta[ '_end_timestamp' ] < $events_meta[ '_start_timestamp' ] ) {
-			return;
+		if ( isset( $_POST['show_end_time'] ) ) {
+			$events_meta['_show_end_time'] = "TRUE";
+
+			// Verify that the end date/time is after the start date/time
+			if ( $events_meta['_end_timestamp'] < $events_meta['_start_timestamp'] ) {
+				return;
+			}
+		}
+		else {
+			$events_meta['_end_timestamp'] = $events_meta['_start_timestamp'];
+			$events_meta['_show_end_time'] = "FALSE";
 		}
 
-		// Get the event location
+		// Save event location
 		$events_meta['_location'] = $_POST['event_location'];
+
 	 
 		// Add values of $events_meta as custom fields
 		foreach ( $events_meta as $key => $value ) { // Cycle through the $events_meta array!
