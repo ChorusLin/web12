@@ -7,7 +7,13 @@ function cl12_color_schemes( $color_schemes ) {
 		'value' => 'purple',
 		'label' => __( 'Purple', 'cl12' ),
 		'thumbnail' => get_stylesheet_directory_uri() . '/inc/images/purple.png',
-		'default_link_color' => '#854898'
+		'default_link_color' => '#80379B'
+	);
+	$color_schemes['blue'] = array(
+		'value' => 'blue',
+		'label' => __( 'Blue', 'cl12' ),
+		'thumbnail' => get_stylesheet_directory_uri() . '/inc/images/blue.png',
+		'default_link_color' => '#009CDD'
 	);
 	return $color_schemes;
 }
@@ -15,6 +21,9 @@ function cl12_color_schemes( $color_schemes ) {
 function cl12_enqueue_color_scheme( $color_scheme ) {
 	if ( 'purple' == $color_scheme ) {
 		wp_enqueue_style( 'purple', get_stylesheet_directory_uri() . '/colors/purple.css', array(), null );
+	}
+	else if ( 'blue' == $color_scheme ) {
+		wp_enqueue_style( 'purple', get_stylesheet_directory_uri() . '/colors/blue.css', array(), null );
 	}
 }
 

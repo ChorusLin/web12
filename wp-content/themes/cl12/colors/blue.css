@@ -10,7 +10,7 @@ body {
 /*	color: #bbb;*/
 }
 #page {
-	background: #faf8f0; /* Blekgult */
+	background: #f6f5f2; /* Grått */
 }
 
 /* Headings */
@@ -24,9 +24,6 @@ blockquote cite {
 }
 pre {
 /*	background: #0b0b0b;*/
-}
-code, kbd {
-	font: 13px Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 }
 abbr, acronym, dfn {
 /*	border-bottom: 1px dotted #999;*/
@@ -48,6 +45,7 @@ input#s {
 
 /* Links */
 a {
+	color: #203a7f !important; /* Mörkblå */
 }
 
 
@@ -58,16 +56,14 @@ a {
 	background: white;
 /*	border-top: 2px solid #0a0a0a;*/
 }
-#site-title a {
-	color: #fcb631; /* Gult */
-}
 #site-title a:hover,
 #site-title a:focus,
-#site-title a:active {
-	color: #fcb631; !important /* Gult */
+#site-title a:active,
+#site-title a {
+	color: #203a7f !important; /* Mörkblå */
 }
 #site-description {
-	color: black;
+	color: #203a7f;
 }
 #branding #s {
 /*	background-color: #ddd;*/
@@ -78,48 +74,51 @@ a {
 ----------------------------------------------- */
 
 #access {
-	background: #7e3c94; /* Show a solid color for older browsers */
-	background: -moz-linear-gradient(#862fa5, #7e3c94);
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#862fa5), to(#7e3c94)); /* older webkit syntax */
-	background: -webkit-linear-gradient(#941ac2, #7e3c94);
+	background: #009cdd; /* Show a solid color for older browsers */
+	background: -o-linear-gradient(#009cdd, #369fd5);
+	background: -moz-linear-gradient(#009cdd, #369fd5);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#009cdd), to(#369fd5)); /* older webkit syntax */
+	background: -webkit-linear-gradient(#009cdd, #369fd5);
 /*	border-bottom: 1px solid #222;*/
+}
+#access a {
+	color: #f8f7f4;
 }
 /* Undermeny */
 #access ul ul a {
 	color: #f8f7f4;
-	background: #7e3c94;
+	background: #009cdd;
 }
 #access li:hover > a,
 #access ul ul :hover > a,
 #access a:focus {
-	background: #b890de; /* Show a solid color for older browsers */
-	background: -moz-linear-gradient(#b890de, #ad8fc9);
-	background: -o-linear-gradient(#b890de, #ad8fc9);
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#b890de), to(#ad8fc9)); /* Older webkit syntax */
-	background: -webkit-linear-gradient(#b890de, #ad8fc9);
+	background: #203a7f; /* Show a solid color for older browsers */
+	background: -moz-linear-gradient(#203a7f, #313e6c);
+	background: -o-linear-gradient(#203a7f, #313e6c);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#203a7f), to(#313e6c)); /* Older webkit syntax */
+	background: -webkit-linear-gradient(#203a7f, #313e6c);
 	color: #f8f7f4;
 }
-
 /* =Content
 ----------------------------------------------- */
 
 .page-title {
-	color: #854898; /* Lila */
+	color: #009cdd; /* Lila */
 }
 .hentry {
 	border-color: white;
 }
 .entry-title {
-	color: #854898;
+	color: #009cdd;
 }
 .entry-title,
 .entry-title a {
-	color: #854898;
+	color: #009cdd;
 }
 .entry-title a:hover,
 .entry-title a:focus,
 .entry-title a:active {
-	color: #854898 !important;
+	color: #ea3556 !important;
 }
 .entry-meta {
 	color: #999;
@@ -128,7 +127,7 @@ a {
 .entry-content h2,
 .comment-content h1,
 .comment-content h2 {
-	color: #854898;
+	color: #009cdd;
 }
 .entry-content table,
 .comment-content table {
@@ -153,7 +152,7 @@ a {
 	color: #000;
 }
 .entry-meta .edit-link a {
-	background: #7e3c94;
+	background: #009cdd;
 	color: white;
 }
 .entry-meta .edit-link a:hover,
@@ -193,6 +192,7 @@ a:active img[class*="wp-image-"] {
 .wp-caption a:hover img {
 	background: #0f0f0f;
 	border-color: #2c2c2c;
+	color: #ea3556;
 }
 
 /* Password Protected Posts */
@@ -233,7 +233,7 @@ a:active img[class*="wp-image-"] {
 }
 /* Singular content styles for Posts and Pages */
 .singular .entry-title {
-	color: #854898;
+	color: #009cdd;
 }
 
 
@@ -425,7 +425,7 @@ section.recent-posts .other-recent-posts .comments-link a:hover {
 
 /* CL Upcoming Widget */
 .widget_clup {
-	background-color: #fcb631;
+	background-color: #203a7f;
 }
 
 /* Search Widget */
@@ -602,8 +602,13 @@ li.bypostauthor a.comment-reply-link:active {
 
 /* Site Generator Line */
 #site-generator {
-	background: #7e3c94;
+	background: #009cdd;
 	border-color: #000;
+}
+#site-generator a:focus,
+#site-generator a:active,
+#site-generator a:hover, {
+	color: #ea3556 !important;
 }
 
 
